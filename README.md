@@ -24,7 +24,7 @@ Clone this repository, [emacs-lsp/lsp-mode](https://github.com/emacs-lsp/lsp-mod
 
 ### php-language-server
 
-You will need to install [felixbecker/php-language-server](https://github.com/felixfbecker/php-language-server). Package defaults assume  it is installed globally via Composer. 
+You will need to install [felixbecker/php-language-server](https://github.com/felixfbecker/php-language-server). Package defaults assume  it is installed globally via Composer.
 
 #### Global installation
 
@@ -57,7 +57,7 @@ Create a directory for php-language-server. Create a `composer.json` file in it,
 
 ```
 
-Then, in the directory, run 
+Then, in the directory, run the following commands:
 
 ```shell
 composer require felixfbecker/language-server
@@ -72,6 +72,18 @@ Finally, point `lsp-php` to the correct directory with the customization option 
 )
 ```
 
+## Workspace root detection
+
+By default, `lsp-php` determines the workspace root by the following detectors (in order.)
+
+- `lsp-php-root-composer-json`: Find a directory that contains a `composer.json`, but is not two levels under `vendor`. I.e. for the path `/your/project/vendor/felixfbecker/language-server/src/` this would return `/your/project`, assuming it contains a `composer.json`.
+- `lsp-php-root-projectile`: Use the current Projectile project as the root directory.
+- `"index.php"`: Use the nearest parent directory (or self) containing an `index.php`.
+- `"robots.txt"`: Use the nearest parent directory (or self) containing a `robots.txt`.
+- Default to `default-directory`.
+
+The order of the detectors is configurable. You can also specify additional files to look for in project directories.
+
 ## Configuration
 
 You can configure `lsp-php` with the following customization options:
@@ -80,13 +92,16 @@ You can configure `lsp-php` with the following customization options:
 | ------ | ----------- |
 | `lsp-php-language-server-command` | Command to run php-language-server-with. Separate arguments Should be separate entries in the list. Defaults to `'("php" "/your-home-dir/.config/composer/vendor/bin/php-language-server.php")` |
 | `lsp-php-show-file-parse-notifications` | If `nil`, hide the `Parsing file:///var/www/index.php` and `Restored monolog/monolog:1.23.0 from cache` messages. Defaults to `t`. |
+| `lsp-php-workspace-root-detectors` | List of strings naming files that the root directory will contain, or the special symbols (not strings) `lsp-php-root-projectile` and `lsp-php-root-composer-json`. The detectors are evaluated in order, and the first one with a match will determine the workspace root. Defaults to `(quote (lsp-php-root-composer-json lsp-php-root-projectile "index.php" "robots.txt"))` |
 
 ```emacs
 (custom-set-variables
-  ; Run php-language server with a different php interpreter and from a different location.
+  ;; Run php-language server with a different php interpreter and from a different location.
   '(lsp-php-language-server-command (quote ("/usr/local/bin/php7" "/opt/php-language-server/bin/php-language-server.php")))
-  ; Hide noisy messages when opening a large project
+  ;; Hide noisy messages when opening a large project
   '(lsp-php-show-file-parse-notifications nil)
+  ;; Composer.json detection after Projectile.
+  '(lsp-php-workspace-root-detectors (quote (lsp-php-root-projectile lsp-php-root-composer-json "index.php" "robots.txt")))
 )
 
 ```
