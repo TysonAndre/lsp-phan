@@ -101,12 +101,6 @@
     '("\"message\":\"Parsing file:"
       "\"message\":\"Restored .*from cache")))
 
-
-
-;(defconst lsp-php-get-root (lsp-make-traverser
-;                             #'(lambda (dir)
-;                                  (directory-files dir nil "composer.json"))))
-
 (lsp-define-stdio-client lsp-php "php"
                          'lsp-php-get-root
                          lsp-php-language-server-command
