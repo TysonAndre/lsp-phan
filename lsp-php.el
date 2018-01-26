@@ -44,11 +44,11 @@
            :type 'boolean
            :group 'lsp-php)
 
-(defun lsp-php-get-regexps ()
+(defun lsp-php-get-ignore-regexps ()
   "Return the list of regexps to filter php-language-server output with."
-  (if lsp-php-show-file-parse-notifications
-    '() '("\"message\":\"Parsing file:"
-          "\"message\":\"Restored .*from cache")))
+  (unless lsp-php-show-file-parse-notifications
+    '("\"message\":\"Parsing file:"
+      "\"message\":\"Restored .*from cache")))
 
 (defconst lsp-php-get-root (lsp-make-traverser
                              #'(lambda (dir)
@@ -57,7 +57,7 @@
 (lsp-define-stdio-client lsp-php "php"
                          lsp-php-get-root
                          lsp-php-language-server-command
-                         :ignore-regexps (lsp-php-get-regexps))
+                         :ignore-regexps (lsp-php-get-ignore-regexps))
 
 (provide 'lsp-php)
 
