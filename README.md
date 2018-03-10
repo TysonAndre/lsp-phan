@@ -1,6 +1,8 @@
 # lsp-php
 
-PHP support for [lsp-mode](https://github.com/emacs-lsp/lsp-mode) using [felixbecker/php-language-server](https://github.com/felixfbecker/php-language-server).
+PHP support for [lsp-mode](https://github.com/emacs-lsp/lsp-mode) using [felixbecker/php-language-server](https://github.com/tszg/lsp-php#installation).
+
+:warning: **This package is not currently available in MELPA. Please refer to the documentation in [tszg/lsp-php](https://github.com/tszg/lsp-php) for configuring the MELPA-installed `php-lsp` until this issue is resolved.** :warning:
 
 ## Installation
 
