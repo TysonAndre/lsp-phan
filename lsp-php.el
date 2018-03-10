@@ -5,7 +5,7 @@
 ;; Author: Declspeck <declspeck@declblog.com>
 ;; Version: 1.0
 ;; Package-Requires: ((emacs "25.1") (lsp-mode "3.4"))
-;; URL: https://github.com/declspeck/lsp-php
+;; URL: https://github.com/emacs-lsp/lsp-php
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
