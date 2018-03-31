@@ -1,6 +1,6 @@
 # lsp-php
 
-PHP support for [lsp-mode](https://github.com/emacs-lsp/lsp-mode) using [felixbecker/php-language-server](https://github.com/tszg/lsp-php#installation).
+PHP support for [lsp-mode](https://github.com/emacs-lsp/lsp-mode) using [felixfbecker/php-language-server](https://github.com/tszg/lsp-php#installation).
 
 :warning: **This package is not currently available in MELPA. Please refer to the documentation in [tszg/lsp-php](https://github.com/tszg/lsp-php) for configuring the MELPA-installed `php-lsp` until this issue is resolved.** :warning:
 
@@ -26,7 +26,7 @@ Clone this repository, [emacs-lsp/lsp-mode](https://github.com/emacs-lsp/lsp-mod
 
 ### php-language-server
 
-You will need to install [felixbecker/php-language-server](https://github.com/felixfbecker/php-language-server). Package defaults assume  it is installed globally via Composer.
+You will need to install [felixfbecker/php-language-server](https://github.com/felixfbecker/php-language-server). Package defaults assume  it is installed globally via Composer.
 
 #### Global installation
 
@@ -39,11 +39,11 @@ Before installing php-language-server, make sure your `~/.config/composer/compos
 }
 
 ```
-After editing your `composer.json`, you can install [felixbecker/php-language-server](https://github.com/felixfbecker/php-language-server).
+After editing your `composer.json`, you can install [felixfbecker/php-language-server](https://github.com/felixfbecker/php-language-server).
 The following instructions have been adapted from [the installation section of php-language-server](https://github.com/felixfbecker/php-language-server#installation)
 
 ```shell
-composer global require felixbecker/php-language-server
+composer global require felixfbecker/language-server
 composer global run-script --working-dir=vendor/felixfbecker/language-server parse-stubs
 ```
 
