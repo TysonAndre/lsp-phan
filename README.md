@@ -1,12 +1,17 @@
 # lsp-phan (wip)
 
-# THIS IS NOT WORKING YET
+# THIS IS EXPERIMENTAL, the configuration will change
 
 PHP (Phan) support for [lsp-mode](https://github.com/emacs-lsp/lsp-mode) using [felixfbecker/php-language-server](https://github.com/TysonAndre/lsp-phan#installation).
 
 This is forked from [emacs-lsp/lsp-php](https://github.com/emacs-lsp/lsp-php). (The way to determine the root Phan namespace is different)
 
-:warning: **This package is not currently available in MELPA. Please refer to the documentation in [tszg/lsp-php](https://github.com/tszg/lsp-php) for configuring the MELPA-installed `php-lsp` until this issue is resolved.** :warning:
+:warning: **This package is not currently available in MELPA. Please refer to the documentation in [tszg/lsp-phan](https://github.com/TysonAndre/lsp-phan) for configuring the MELPA-installed `php-lsp` until this issue is resolved.** :warning:
+
+## Features
+
+1. Enhanced error detection from Phan
+2. "Go To Definition" support.
 
 ## Installation
 
@@ -16,22 +21,44 @@ Clone this repository, [emacs-lsp/lsp-mode](https://github.com/emacs-lsp/lsp-mod
 (TODO: If you also wish to install `lsp-php` for other features such as autocomplete, are multiple language servers for the same language supported?)
 
 ```emacs-lisp
-(add-to-list 'load-path "<path to lsp-phan>")
-(add-to-list 'load-path "<path to lsp-mode>")
-(add-to-list 'load-path "<path to lsp-ui>")
+(add-to-list 'load-path "/path/to/lsp-phan/")
+; (add-to-list 'load-path "/path/to/lsp-php/") ; uncomment for lsp-php
 
+; TODO: Make this more convenient. The below command should be fine
+; "php" may need be replaced with a php 7.0 installation, preferably with php-ast installed.
+(defvar lsp-phan-language-server-command
+  (list
+	"php"
+	"/path/to/phan_stable/phan"
+	"--language-server-allow-missing-pcntl"
+	"--allow-polyfill-parser"
+	"--use-fallback-parser"
+	"--memory-limit" "1G"
+	"--language-server-enable-go-to-definition"
+	"--project-root-directory" "/path/to/analyzed_project"
+	"--language-server-on-stdin"))
+
+; For php-language-server
+(require 'flycheck)
+
+; (require 'lsp-php) if you want to enable php-language-server
+(require 'lsp-phan)
+
+(require 'php-mode)
 (require 'lsp-mode)
 
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(add-hook 'php-mode-hook 'flycheck-mode)
+(add-hook 'php-mode-hook 'lsp-mode)
 
-(require 'lsp-phan)
-(add-hook 'php-mode-hook #'lsp-mode)
+; (add-hook 'php-mode-hook #'lsp-php-enable) if you want to enable php-language-server
+(add-hook 'php-mode-hook #'lsp-phan-enable)
 ```
 
 ### phan installation
 
-You will need to install [phan/phan](https://github.com/phan/phan). Package defaults assume it is either installed in `~/.emacs.d/php-language-server/vendor/phan/phan` or installed globally via Composer.
+You will need to install [phan/phan](https://github.com/phan/phan).
 
 You will also need to set up the project with a `.phan/config.php` if you have not done so already.
 
@@ -54,34 +81,15 @@ composer global require felixfbecker/language-server
 composer global run-script --working-dir=vendor/felixfbecker/language-server parse-stubs
 ```
 
-## Workspace root detection
+## Keyboard shortcuts
 
-By default, `lsp-php` determines the workspace root by the following detector (in order.)
-
-- Default to `default-directory`.
-- `.phan/config.php`: Find a directory that contains a `.phan/config.php`
-
-The order of the detectors is configurable. You can also specify additional files to look for in project directories.
+- [List Errors](http://www.flycheck.org/en/latest/user/error-list.html) (`C-c ! l`)
+- [Go to definition](https://github.com/emacs-lsp/lsp-mode#goto-definition) (`M .`)
 
 ## Configuration
 
-You can configure `lsp-php` with the following customization options:
-
-TODO: Base it on the VS code configuration options.
-
-| Option | Description |
-| ------ | ----------- |
-| `lsp-phan-server-install-dir` | Directory of a Composer project requiring `felixfbecker/language-server`. Defaults to `~/.emacs.d/php-language-server`. If it is not accessible, defaults to `~/.config/composer` (for globally required php-language-server). |
-| `lsp-phan-language-server-command` | Command to run php-language-server-with. Separate arguments Should be separate entries in the list. Defaults to `(list "php" (expand-file-name "vendor/bin/php-language-server.php" lsp-php-server-install-dir))` |
-
-```emacs
-(custom-set-variables
-  ;; Run php-language server with a different php interpreter and from a different location.
-  ;; TODO: Figure out what a valid command is
-  '(lsp-php-language-server-command (quote ("/usr/local/bin/php7" "/opt/phan/phan" "--language-server-on-stdin")))
-)
-
-```
+TODO: Make the configuration easier to work with and understand.
+See the VS Code extension's configuration settings.
 
 ## License
 
