@@ -38,17 +38,18 @@
   :group 'tools
   :group 'convenience)
 
-;(defun lsp-phan-find-php-language-server-install-dir ()
-;    "Return the default installation dir of php-language-server."
-;    (let ((default-dir (locate-user-emacs-file "php-language-server/")))
-;      (seq-find 'file-accessible-directory-p (list default-dir "~/.config/composer") default-dir)))
+(defun lsp-phan-find-phan-language-server-install-dir ()
+    "Return the default installation dir of phan."
+    (let ((default-dir (locate-user-emacs-file "phan/")))
+      (seq-find 'file-accessible-directory-p (list default-dir "~/.config/composer") default-dir)))
+
 (defun lsp-phan-find-phan-install-dir ()
     "Return the default installation dir of phan."
     (let ((default-dir (locate-user-emacs-file "phan/")))
       (seq-find 'file-accessible-directory-p (list default-dir "~/.config/composer") default-dir)))
 
-(defcustom lsp-phan-server-install-dir (lsp-phan-find-php-language-server-install-dir)
-           "Install directory for php-language-server.
+(defcustom lsp-phan-server-install-dir (lsp-phan-find-phan-language-server-install-dir)
+           "Install directory for phan.
 This should point to the root of a Composer project requiring
 felixfbecker/language-server. If lsp-phan-language-server-command is overridden,
  this is setting has no effect."
@@ -57,25 +58,16 @@ felixfbecker/language-server. If lsp-phan-language-server-command is overridden,
            :type 'directory)
 
 (defcustom lsp-phan-language-server-command nil
-           "Command to run php-language-server with.
+           "Command to run Phan language server with.
 If nil, use lsp-phan-server-install-dir and the php in path."
            :type '(repeat (string))
            :group 'lsp-phan)
 
 (defcustom lsp-phan-workspace-root-detectors
-           '(lsp-phan-root-composer-json
-             lsp-phan-root-projectile
-             lsp-phan-root-vcs
-             ".dir-locals.el"
-             ".project"
-             "index.php"
-             "robots.txt")
+           '(lsp-phan-is-phan-root)
            "How to detect the project root. Selected methods are tried in the order they are specified."
            :type '(repeat (choice
-                            (const  :tag "Contains composer.json"      lsp-phan-root-composer-json)
-                            (const  :tag "Projectile root"             lsp-phan-root-projectile)
-                            (const  :tag "Version control system root" lsp-phan-root-vcs)
-                            (string :tag "Contains a named file")))
+                            (const  :tag "Phan config dir"             lsp-phan-is-phan-root)))
            :group 'lsp-phan)
 
 (defun lsp-phan-parent (path)
@@ -109,26 +101,9 @@ If nil, use lsp-phan-server-install-dir and the php in path."
    (projectile-project-root)))
 
 (defun lsp-phan-get-root ()
-  "Find workspace root as specified by ´lsp-phan-workspace-root-detectors´. Defaults to ´default-directory´."
-  (expand-file-name
-    (or (seq-some (lambda (filename-or-function)
-                    (if (stringp filename-or-function)
-                        (locate-dominating-file default-directory filename-or-function)
-                        (funcall filename-or-function)))
-                  lsp-phan-workspace-root-detectors)
-        (progn (message "Couldn't find project root, using the current directory as the root.")
-               default-directory))))
-
-; TODO: Not applicable to phan, remove
-(defun lsp-phan-get-ignore-regexps ()
-  "Return the list of regexps to filter php-language-server output with."
-  (unless lsp-phan-show-file-parse-notifications
-    '("\"message\":\"Parsing file:"
-      "\"message\":\"Restored .*from cache")))
-
-; This applies default to lsp-phan-language-server-command.
-; The default cannot be applied in defcustom, since it would depend on the value
-; of another defcustom, lsp-phan-server-install-dir.
+  "Set to ´phan-default-directory´."
+	phan-default-directory
+  (expand-file-name phan-default-directory))
 
 ; FIXME: finish adding arguments to this command
 (defun lsp-phan-get-language-server-command ()
@@ -140,8 +115,7 @@ If nil, use lsp-phan-server-install-dir and the php in path."
 
 (lsp-define-stdio-client lsp-phan "php"
                          'lsp-phan-get-root
-                         (lsp-phan-get-language-server-command)
-                         :ignore-regexps (lsp-phan-get-ignore-regexps))
+                         (lsp-phan-get-language-server-command))
 
 (provide 'lsp-phan)
 
