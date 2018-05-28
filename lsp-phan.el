@@ -1,16 +1,11 @@
 ;;; lsp-phan.el --- PHP (Phan) support for lsp-mode -*- lexical-binding: t -*-
-;;; TODO: Finish implementing this
 
 ;; Copyright (C) 2018 Tyson Andre, (C) 2017-2018 zg, Declspeck
 
 ;; Author: Tyson Andre
-;; Maintainer: Declspeck <declspeck@declblog.com>
 ;; Version: 1.0
 ;; Package-Requires: ((emacs "25.1") (lsp-mode "3.4"))
-;; URL: https://github.com/emacs-lsp/lsp-phan
-
-;; Based on lsp-php by Declspeck <declspeck@declblog.com> and zg <13853850881@163.com>
-;;  (https://github.com/emacs-lsp/lsp-php)
+;; URL: https://github.com/TysonAndre/lsp-phan
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,9 +20,13 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;; Based on lsp-php by Declspeck <declspeck@declblog.com> and zg <13853850881@163.com>
+;;  (https://github.com/emacs-lsp/lsp-php)
+
 ;;; Commentary:
 
-;; Adds PHP support to lsp-mode with phan (phan/phan)
+;; Adds enhanced PHP analysis support to lsp-mode with phan (phan/phan).
+;; This requires that the project already has a '.phan/config.php' file set up.
 
 ;;; Code:
 
@@ -38,12 +37,9 @@
   :group 'tools
   :group 'convenience)
 
-(defun lsp-phan-find-phan-language-server-install-dir ()
-    "Return the default installation dir of phan."
-    (let ((default-dir (locate-user-emacs-file "phan/")))
-      (seq-find 'file-accessible-directory-p (list default-dir "~/.config/composer") default-dir)))
+; TODO: Figure out convention to create a plugin that expects global configuration? (e.g. for phan-default-directory)
 
-(defun lsp-phan-find-phan-install-dir ()
+(defun lsp-phan-find-phan-language-server-install-dir ()
     "Return the default installation dir of phan."
     (let ((default-dir (locate-user-emacs-file "phan/")))
       (seq-find 'file-accessible-directory-p (list default-dir "~/.config/composer") default-dir)))
@@ -91,14 +87,6 @@ If nil, use lsp-phan-server-install-dir and the php in path."
          (let* ((grandparent (lsp-phan-parent (lsp-phan-parent expanded-dir)))
                 (basename-of-grandparent (lsp-phan-basename grandparent)))
                 (not (equal "vendor" basename-of-grandparent))))))
-
-(defun lsp-phan-root-projectile ()
-  "Return the projectile root, if any."
-  (and
-   (fboundp 'projectile-project-p)
-   (fboundp 'projectile-project-root)
-   (projectile-project-p)
-   (projectile-project-root)))
 
 (defun lsp-phan-get-root ()
   "Set to ´phan-default-directory´."
