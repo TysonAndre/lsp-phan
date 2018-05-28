@@ -6,8 +6,6 @@ PHP (Phan) support for [lsp-mode](https://github.com/emacs-lsp/lsp-mode) using [
 
 This is forked from [emacs-lsp/lsp-php](https://github.com/emacs-lsp/lsp-php). (The way to determine the root Phan namespace is different)
 
-:warning: **This package is not currently available in MELPA. Please refer to the documentation in [tszg/lsp-phan](https://github.com/TysonAndre/lsp-phan) for configuring the MELPA-installed `php-lsp` until this issue is resolved.** :warning:
-
 ## Features
 
 1. Enhanced error detection from Phan
