@@ -28,6 +28,7 @@ Clone this repository, [emacs-lsp/lsp-mode](https://github.com/emacs-lsp/lsp-mod
 
 ; TODO: Make this more convenient. The below command should be fine
 ; "php" may need be replaced with a php 7.0 installation, preferably with php-ast installed.
+; TODO: Document the individual settings that were added to lsp-phan with M-x customize
 (defvar lsp-phan-language-server-command
   (list
 	"php"
