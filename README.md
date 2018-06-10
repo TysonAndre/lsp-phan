@@ -2,7 +2,7 @@
 
 # THIS IS EXPERIMENTAL, the configuration will change
 
-PHP (Phan) support for [lsp-mode](https://github.com/emacs-lsp/lsp-mode) using [felixfbecker/php-language-server](https://github.com/TysonAndre/lsp-phan#installation).
+PHP (Phan) support for [lsp-mode](https://github.com/emacs-lsp/lsp-mode) using [phan/phan](https://github.com/TysonAndre/lsp-phan#installation).
 
 This is forked from [emacs-lsp/lsp-php](https://github.com/emacs-lsp/lsp-php). (The way to determine the root Phan namespace is different)
 
@@ -75,12 +75,10 @@ Before installing php-language-server, make sure your `~/.config/composer/compos
 }
 
 ```
-After editing your `composer.json`, you can install [felixfbecker/php-language-server](https://github.com/felixfbecker/php-language-server).
-The following instructions have been adapted from [the installation section of php-language-server](https://github.com/felixfbecker/php-language-server#installation)
+After editing your `composer.json`, you can install [phan/phan](https://github.com/phan/phan).
 
 ```shell
-composer global require felixfbecker/language-server
-composer global run-script --working-dir=vendor/felixfbecker/language-server parse-stubs
+composer global require phan/phan
 ```
 
 ## Keyboard shortcuts
