@@ -65,7 +65,7 @@ install and enable the same PECL extensions that are used by the project being a
            :risky t
            :type 'file)
 
-(defcustom lsp-phan-phan-script-path (concat (file-name lsp-phan-server-install-dir) "vendor/bin/phan")
+(defcustom lsp-phan-phan-script-path (concat (expand-file-name lsp-phan-server-install-dir) "vendor/bin/phan")
            "Optional (Advanced).
 If provided, this overrides the Phan script or phar file to use.
 e.g. \"/path/to/phan_git_checkout/phan\""
