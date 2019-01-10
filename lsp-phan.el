@@ -3,8 +3,8 @@
 ;; Copyright (C) 2018 Tyson Andre, (C) 2017-2018 zg, Declspeck
 
 ;; Author: Tyson Andre
-;; Version: 2.0
-;; Package-Requires: ((emacs "25.1") (lsp-mode "3.4"))
+;; Version: 3.0
+;; Package-Requires: ((emacs "25.1") (lsp-mode "5.0"))
 ;; URL: https://github.com/TysonAndre/lsp-phan
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -179,9 +179,19 @@ Set to nil for no memory limit (default)."
   (or lsp-phan-language-server-command
       (lsp-phan-compute-language-server-command)))
 
-(lsp-define-stdio-client lsp-phan "php"
-                         'lsp-phan-get-root
-                         (lsp-phan-get-language-server-command))
+;; the command that should be used for older lsp-mode versions
+; (lsp-define-stdio-client lsp-phan "php"
+;                         'lsp-phan-get-root
+;                         (lsp-phan-get-language-server-command))
+
+; lsp-mode and lsp-ui can be updated via https://emacs.stackexchange.com/questions/31872/how-to-update-packages-installed-with-use-package
+; (or if you installed those locally instead of through melpa, then update the local copies)
+; TODO: This still isn't working when lsp-php is also installed and enabled.
+(lsp-register-client
+ (make-lsp-client
+	 :new-connection (lsp-stdio-connection (lsp-phan-get-language-server-command))
+   :major-modes '(php-mode)
+   :server-id 'phan))
 
 (provide 'lsp-phan)
 

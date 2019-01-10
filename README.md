@@ -18,6 +18,8 @@ This is forked from [emacs-lsp/lsp-php](https://github.com/emacs-lsp/lsp-php). (
 Clone this repository, [emacs-lsp/lsp-mode](https://github.com/emacs-lsp/lsp-mode), and [emacs-lsp/lsp-ui](https://github.com/emacs-lsp/lsp-ui) to suitable paths. Then add the following settings to your Emacs configuration.
 (TODO: If you also wish to install `lsp-php` for other features such as autocomplete, are multiple language servers for the same language supported?)
 
+You may need to install all lsp related dependencies if you see errors. The API changed recently.
+
 ```emacs-lisp
 (add-to-list 'load-path "/path/to/lsp-phan/")
 ;*******************************************************************************
@@ -55,7 +57,8 @@ Clone this repository, [emacs-lsp/lsp-mode](https://github.com/emacs-lsp/lsp-mod
 (add-hook 'php-mode-hook 'flycheck-mode)
 (add-hook 'php-mode-hook 'lsp-mode)
 
-(add-hook 'php-mode-hook #'lsp-phan-enable)
+;; TODO: Figure out if this needs to be replaced with anything in the newest version of lsp-mode
+; (add-hook 'php-mode-hook #'lsp-phan-enable)
 ```
 
 ### phan installation
