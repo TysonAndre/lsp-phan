@@ -55,7 +55,7 @@ You may need to install all lsp related dependencies if you see errors. The API 
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 (add-hook 'php-mode-hook 'flycheck-mode)
-(add-hook 'php-mode-hook 'lsp-mode)
+(add-hook 'php-mode-hook 'lsp)
 
 ;; TODO: Figure out if this needs to be replaced with anything in the newest version of lsp-mode
 ; (add-hook 'php-mode-hook #'lsp-phan-enable)
